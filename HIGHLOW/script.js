@@ -1,3 +1,5 @@
+// 기준카드 카드사진변경 기능 구현, 보충 필요
+
 const h2 = document.querySelector("h2");
 const card1 = document.querySelector("#card1");
 const card2 = document.querySelector("#card2");
@@ -8,8 +10,11 @@ const calcBetHigh = document.getElementById("calcBetHigh");
 const calcBetLow = document.getElementById("calcBetLow");
 const betMoney = document.getElementById("betMoney");
 const bettingButton = document.querySelector(".bettingButton");
-const upRange = document.getElementById("reward");
-const downRange = document.getElementById("Dreward");
+const upReward = document.getElementById("reward");
+const downReward = document.getElementById("Dreward");
+const bettingMoneyForm = document.getElementById("bettingMoneyForm");
+const standardCardImage = document.getElementById("cardImg1");
+const bettingCardImage = document.getElementById("cardImg2");
 
 let card1Num, card2Num;
 let card1Type, card2Type;
@@ -28,9 +33,14 @@ calculatorMoney();
 
 console.log(`${card2Num}`);
 
+bettingMoneyForm.addEventListener("submit", bettingMoneyFormPrevent);
 bettingForm.addEventListener("submit", bettingFormPrevent);
 upBtn.addEventListener("click", ifButtonClickIsUp);
 downBtn.addEventListener("click", ifButtonClickIsDown);
+
+function bettingMoneyFormPrevent(event){
+    event.preventDefault();
+}
 
 function bettingFormPrevent(event){
     event.preventDefault();
@@ -40,16 +50,29 @@ function createStandardCard(){
     card1Type = cardType[Math.round(Math.random()*3)];
     card1Num  = cardNum[Math.round(Math.random()*13)];
 
+    standardCardImage.src=`${card1Type}${card1Num}.png`;
+    console.log(standardCardImage.src);
+
     if(card1Num==="1" || card1Num==="JOKER"){
         card1Num="7";
     } 
-
-    //card1.innerText = `${card1Type}${card1Num}`;
 }
 
 function ifButtonClickIsUp(){
-    bettingButton.classList.add("hidden");
-    
+    if(parseInt(betMoney.value)>money){
+        alert(`베팅금은 보유금을 초과할 수 없습니다.`);
+        betMoney.value ="";
+        return 0;
+    }
+    if(parseInt(betMoney.value)<1000){
+        alert(`천 원 이상부터 베팅이 가능합니다.`);
+        betMoney.value = "";
+        return 0;
+    }
+
+    bettingCardImage.src=`${card2Type}${card2Num}.png`;
+    console.log(bettingCardImage.src);
+
     if(card2Num==="JOKER" && card1Num !== "JOKER"){
         money = money + parseInt(betMoney.value*highMoneyPer);
         h2.innerText = `${money}`;
@@ -120,7 +143,18 @@ function ifButtonClickIsUp(){
 
 
 function ifButtonClickIsDown(){
-    bettingButton.classList.add("hidden");
+    if(parseInt(betMoney.value)>money){
+        alert(`베팅금은 보유금을 초과할 수 없습니다.`);
+        betMoney.value ="";
+        return 0;
+    }
+    if(parseInt(betMoney.value)<1000){
+        alert(`천 원 이상부터 베팅이 가능합니다.`);
+        betMoney.value = "";
+        return 0;
+    }
+    bettingCardImage.src=`${card2Type}${card2Num}.png`;
+    console.log(bettingCardImage.src);
 
     if(card2Num==="JOKER" && card1Num !== "JOKER"){
         money = money + parseInt(betMoney.value*highMoneyPer);
@@ -222,6 +256,6 @@ function calculatorMoney(){
     highMoneyPer = Math.round(((downCount*0.1)+1)*1000)/1000;
     lowMoneyPer = Math.round(((upCount*0.1)+1)*1000)/1000;
 
-    upRange.innerText = `x${highMoneyPer}`;
-    downRange.innerText = ` x${lowMoneyPer}`;
+    upReward.innerText = `x${highMoneyPer}`;
+    downReward.innerText = ` x${lowMoneyPer}`;
 }
