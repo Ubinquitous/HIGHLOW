@@ -4,19 +4,32 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
     <title>Document</title>
 </head>
 <body>
-    <h1>현재 돈</h1>
-    <h2>0</h2>
-    <form id="betting">
-        <input type="submit" id="upBetting" value="HIGH">
-        <input type="submit" id="downBetting" value="LOW">
-
-    </form>
-    <h3 id="card1"></h3>
-    <h3 id="card2"></h3>
-    <script src="./script.js"></script>
+    <div id="container">
+    <!--<h1 id="title">HIGHLOW - Made With Ubinquitous</h1>
+        <h3 id="card1"></h3>
+        <h3 id="card2"></h3>-->
     
+    <div id="buttonDiv">
+    <form id="betting">
+        <button type="submit" id="upBetting"   class="bettingButton" style="cursor:pointer;">HIGH<br><span id="range">7~A</span><br><span id="reward">x1.6</span></button>
+    <button type="submit" id="downBetting" class="bettingButton" style="cursor:pointer;">LOW<br><span id="Drange">2~5</span><br><span id="Dreward">x1.6</span></button>
+    </div>
+        <img src="./H_2.png" id="cardImg">
+        <br>
+        <input type="text" id="betMoney" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" required>
+        
+    </form>
+    <br>
+    <h1 id="haveMoney">보유 금액</h1>
+    <h2>0</h2>
+    <h3 id="calcBetHigh"></h3>
+    <h3 id="calcBetLow"></h3>
+
+    </div>
+    <script src="./script.js"></script>
 </body>
 </html>

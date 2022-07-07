@@ -1,0 +1,128 @@
+* {
+    margin: 0 auto;
+    color: blue;
+}
+
+#buttonDiv {
+    display: inline-block;
+    align-items:center;
+    position:static;
+}
+#container {
+    width:100%;
+    height:100%;
+    margin-top:40px;
+    /*background-color: black;*/
+}
+
+#cardImg {
+    box-shadow:2px 2px 2px 2px gray;
+    border-radius:20px;
+    margin-left:50px;
+    width:500px;
+    height:400px;
+}
+#imgDiv {
+    display:inline-block;
+}
+
+#range {
+    font-size:25px;
+    color: rgb(80, 81, 93);
+}
+#Drange {
+    font-size:25px;
+    color:white;
+}
+#reward {
+    font-size:20px;
+}
+
+#Dreward {
+    font-size:20px;
+}
+
+#title {
+    font-weight:bold;
+    font-size:50px;
+    text-align: center;
+}
+#upBetting {
+    background-color: rgb(222, 197, 110);
+    color: rgb(80, 81, 93);
+}
+
+
+#downBetting {
+    background-color: rgb(80, 81, 93);
+}
+
+#haveMoney {
+    float:left;
+}
+
+h2 {
+    float:left;
+}
+
+
+  .bettingButton,
+  .bettingButton::after {
+    -webkit-transition: all 0.3s;
+      -moz-transition: all 0.3s;
+    -o-transition: all 0.3s;
+      transition: all 0.3s;
+}
+  
+.bettingButton {
+
+    border-radius: 15px;
+    display: block;
+    font-size: 32px;
+    font-weight: bold;
+    margin: 10px;
+    width: 310px;
+    height:240px;
+    margin-left:30px;
+    border-left:none;
+    border-right:none;
+    border-top:none;
+    border-bottom:none;
+    margin-bottom:15px;
+}
+  
+.bettingButton::before,
+.bettingButton::after {
+    content: '';
+    position: absolute;
+    z-index: -1;
+}
+  
+#upBetting:hover {
+    color: rgb(50, 51, 64);
+    background-color: rgb(254, 217, 82);/*rgb(200, 182, 120);*/
+}
+#downBetting:hover {
+    color: rgb(255, 246, 214);
+    background-color: rgb(145, 148, 177);
+}
+
+.bettingButton {
+    overflow: hidden;
+}
+
+.bettingButton::after {
+    height: 100%;
+    left: -35%;
+    top: 0;
+    transform: skew(50deg);
+    transition-duration: 0.6s;
+    transform-origin: top left;
+    width: 0;
+}
+
+.bettingButton:hover:after {
+    height: 100%;
+    width: 135%;
+    
+}
