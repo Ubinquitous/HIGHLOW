@@ -1,5 +1,3 @@
-// 기준카드 카드사진변경 기능 구현, 보충 필요
-
 const h2 = document.querySelector("h2");
 const card1 = document.querySelector("#card1");
 const card2 = document.querySelector("#card2");
@@ -16,10 +14,18 @@ const bettingMoneyForm = document.getElementById("bettingMoneyForm");
 const standardCardImage = document.getElementById("cardImg1");
 const bettingCardImage = document.getElementById("cardImg2");
 
+const redButton = document.getElementById("REDBUTTON");
+const blackButton = document.getElementById("BLACKBUTTON");
+const threeTo8Button = document.getElementById("3TO8BUTTON");
+const jokerButton = document.getElementById("JOKERBUTTON");
+const jqkaButton = document.getElementById("JQKABUTTON");
+const optionValue = document.getElementById("optionValue");
+
+let optionCalculator;
 let card1Num, card2Num;
 let card1Type, card2Type;
 let highMoneyPer, lowMoneyPer;
-let money = 10000;
+let money = 100000;
 h2.innerText = money;
 
 const cardType = ["H_", "D_", "S_", "C_"];
@@ -28,15 +34,45 @@ const cardNum = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A
 card2Type = cardType[Math.round(Math.random()*3)];
 card2Num  = cardNum[Math.round(Math.random()*13)];
 
+if(card1Type!=="H_" && card1Num==="JOKER"){
+    card1Num="7";
+} 
+
 createStandardCard();
 calculatorMoney();
-
 console.log(`${card2Num}`);
 
 bettingMoneyForm.addEventListener("submit", bettingMoneyFormPrevent);
 bettingForm.addEventListener("submit", bettingFormPrevent);
 upBtn.addEventListener("click", ifButtonClickIsUp);
 downBtn.addEventListener("click", ifButtonClickIsDown);
+
+redButton.addEventListener("click", ifRedButtonIsClick);
+blackButton.addEventListener("click", ifBlackButtonIsClick);
+threeTo8Button.addEventListener("click", if3to8ButtonIsClick);
+jqkaButton.addEventListener("click", ifJQKAButtonIsClick);
+jokerButton.addEventListener("click", ifJokerButtonIsClick);
+
+function ifRedButtonIsClick(){
+    optionCalculator = "RED";
+    optionValue.innerText = `RED`;
+}
+function ifBlackButtonIsClick(){
+    optionCalculator = "BLACK";
+    optionValue.innerText = `BLACK`;
+}
+function if3to8ButtonIsClick(){
+    optionCalculator = "3~8";
+    optionValue.innerText = `3~8`;
+}   
+function ifJQKAButtonIsClick(){
+    optionCalculator = "JQKA";
+    optionValue.innerText = `J,Q,K,A`;
+}
+function ifJokerButtonIsClick(){
+    optionCalculator = "JOKER";
+    optionValue.innerText = `JOKER`;
+}
 
 function bettingMoneyFormPrevent(event){
     event.preventDefault();
@@ -50,15 +86,22 @@ function createStandardCard(){
     card1Type = cardType[Math.round(Math.random()*3)];
     card1Num  = cardNum[Math.round(Math.random()*13)];
 
-    standardCardImage.src=`${card1Type}${card1Num}.png`;
+    standardCardImage.src=`./img/${card1Type}${card1Num}.png`;
     console.log(standardCardImage.src);
 
     if(card1Num==="1" || card1Num==="JOKER"){
         card1Num="7";
+        standardCardImage.src=`./img/${card1Type}7.png`;
     } 
 }
 
+
 function ifButtonClickIsUp(){
+    if(betMoney.value==""){
+        alert(`베팅금을 입력해주세요.`);
+        return 0;
+    }
+
     if(parseInt(betMoney.value)>money){
         alert(`베팅금은 보유금을 초과할 수 없습니다.`);
         betMoney.value ="";
@@ -70,7 +113,61 @@ function ifButtonClickIsUp(){
         return 0;
     }
 
-    bettingCardImage.src=`${card2Type}${card2Num}.png`;
+    if(optionCalculator=="RED"){
+        if(card2Type=="H_" || card2Type=="D_"){
+            money = money + parseInt(betMoney.value*1.5);
+        } else {
+            money = money - parseInt(betMoney.value*1.5);
+        }
+    }
+    if(optionCalculator=="BLACK"){
+        if(card2Type=="S_" || card2Type=="C_"){
+            money = money + parseInt(betMoney.value*1.5);
+        } else {
+            money = money - parseInt(betMoney.value*1.5);
+        }
+    }
+    if(optionCalculator=="3~8"){
+        if(card2Num>=3 && card2Num<=8){
+            money = money + parseInt(betMoney.value*1.5);
+        } else {
+            money = money - parseInt(betMoney.value*1.5);
+        }
+    }
+    if(optionCalculator=="JQKA"){
+        if(card2Num=="J" || card2Num=="Q" || card2Num=="K" || card2Num=="A"){
+            money = money + parseInt(betMoney.value*1.8);
+        } else {
+            money = money - parseInt(betMoney.value*1.8);
+        }
+    }
+
+    if(optionCalculator=="JOKER"){
+        if(betMoney.value>money/10){
+            alert(`자금이 부족합니다.`);
+            betMoney.value="";
+            return 0;
+        }
+        if(card2Num=="JOKER"){
+            money = money + parseInt(betMoney.value*10);
+        } else {
+            money = money - parseInt(betMoney.value*10);
+        }
+    }
+
+    if(parseInt(card2Num)===11){
+        card2Num = "J";
+    } else if(parseInt(card2Num)===12){
+        card2Num = "Q";
+    } else if(parseInt(card2Num)===13){
+        card2Num = "K";
+    } else if(parseInt(card2Num)===14){
+        card2Num = "A";
+    } else if(parseInt(card2Num)===15){
+        card2Num = "JOKER";
+    }
+
+    bettingCardImage.src=`./img/${card2Type}${card2Num}.png`;
     console.log(bettingCardImage.src);
 
     if(card2Num==="JOKER" && card1Num !== "JOKER"){
@@ -84,7 +181,6 @@ function ifButtonClickIsUp(){
         money = money - parseInt(betMoney.value);
         h2.innerText = `${money}`;
     }
-
 
     if(isNaN(parseInt(card2Num)) && card2Num!=="JOKER" && isNaN(parseInt(card1Num)) && card1Num!=="JOKER"){
         if((card1Num==="J" && card2Num==="Q") || (card1Num==="Q" && card2Num==="K") || (card1Num==="K" && card2Num==="A") || (card1Num==="Q" && card2Num==="A")){
@@ -113,7 +209,6 @@ function ifButtonClickIsUp(){
             h2.innerText = `${money}`;
         }
     }
-
     if(card2Num===11){
         card2Num = ["J"];
     }else if(card2Num===12){
@@ -125,7 +220,6 @@ function ifButtonClickIsUp(){
     }else if(card2Num===15){
         card2Num = ["JOKER"];
     }
-    
     if(card1Num===11){
         card1Num = ["J"];
     }else if(card1Num===12){
@@ -137,12 +231,15 @@ function ifButtonClickIsUp(){
     }else if(card2Num===15){
         card2Num = ["JOKER"];
     }
-
-    //card2.innerText = `${card2Type}${card2Num}`;
+    betMoney.value = "";
 }
 
 
 function ifButtonClickIsDown(){
+    if(betMoney.value==""){
+        alert(`베팅금을 입력해주세요.`);
+        return 0;
+    }
     if(parseInt(betMoney.value)>money){
         alert(`베팅금은 보유금을 초과할 수 없습니다.`);
         betMoney.value ="";
@@ -153,7 +250,18 @@ function ifButtonClickIsDown(){
         betMoney.value = "";
         return 0;
     }
-    bettingCardImage.src=`${card2Type}${card2Num}.png`;
+    if(parseInt(card2Num)===11){
+        card2Num = "J";
+    } else if(parseInt(card2Num)===12){
+        card2Num = "Q";
+    } else if(parseInt(card2Num)===13){
+        card2Num = "K";
+    } else if(parseInt(card2Num)===14){
+        card2Num = "A";
+    } else if(parseInt(card2Num)===15){
+        card2Num = "JOKER";
+    }
+    bettingCardImage.src=`./img/${card2Type}${card2Num}.png`;
     console.log(bettingCardImage.src);
 
     if(card2Num==="JOKER" && card1Num !== "JOKER"){
@@ -167,7 +275,6 @@ function ifButtonClickIsDown(){
         money = money - parseInt(betMoney.value);
         h2.innerText = `${money}`;
     }
-
     if(isNaN(parseInt(card2Num)) && card2Num!=="JOKER" && isNaN(parseInt(card1Num)) && card1Num!=="JOKER"){
         if((card1Num==="J" && card2Num==="Q") || (card1Num==="Q" && card2Num==="K") || (card1Num==="K" && card2Num==="A") || (card1Num==="Q" && card2Num==="A")){
             money = money - betMoney.value;
@@ -219,11 +326,11 @@ function ifButtonClickIsDown(){
     }else if(card2Num===15){
         card2Num = ["JOKER"];
     }
-
-    //card2.innerText = `${card2Type}${card2Num}`;
+    betMoney.value = "";
 }
 
 function calculatorMoney(){
+
     if(card1Num==="J"){
         card1Num = 11;
     } else if(card1Num==="Q"){

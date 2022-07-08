@@ -8,11 +8,12 @@ body {
 }
 
 input[type="radio"]{
-    display:none;   
+    display:none;
 }
 #typesDiv {
     float:right;
 }
+
 .S {
     border-radius:7px;
     padding:45px 53px;
@@ -113,6 +114,26 @@ input[type="radio"]{
     color:rgb(254, 217, 82);
     margin-left:40px;
 }
+#option {
+    float:right;
+    text-align:right;
+    margin-top: 0px;
+    margin-left:70px;
+    margin-right:20px;
+    font-size:22px;
+    color:rgb(145, 148, 177);
+}
+#optionValue {
+    float:right;
+    margin-top:0 auto;
+    display:block;
+    background-color:rgba(69, 70, 72);
+    width:170px;
+    height:35px;
+    border-radius: 5px;
+    padding-left:10px;
+}
+
 #betMoney {
     float:right;
     text-align:right;
@@ -129,7 +150,7 @@ input[type="radio"]{
     color:white;
     font-weight: bold;
 }
-h2 {
+#money {
     text-align: right;
     padding-right:10px;
     display:block;

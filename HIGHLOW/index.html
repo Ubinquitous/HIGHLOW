@@ -9,7 +9,7 @@
 </head>
 <body>
     <div id="container"><br>
-    <h1 id="title">HIGHLOW - Made With Ubinquitous</h1><br>
+    <h1 id="title">HIGHLOW - Made By Ubinquitous</h1><br>
     
     <div id="buttonDiv">
     <form id="betting">
@@ -17,29 +17,29 @@
     <button type="submit" id="downBetting" class="bettingButton" style="cursor:pointer;">LOW<br><span id="Drange">2~5</span><br><span id="Dreward">x1.6</span></button>
     </div>
         <img src="#" id="cardImg1" class="cardImg">
-        <img src="#" id="cardImg2" class="cardImg">
+        <img src="./img/card.png" id="cardImg2" class="cardImg">
 
     <form class="typeBetting">
         <div id="typesDiv">
         <input type="radio" name="typeCard" id="typeBetRed" class="types">
         <label for="typeBetRed">
-            <span class="S RED" style="font-weight:bold; color:red;">&nbsp;&nbsp;RED&nbsp;&nbsp;<br><span style="color:white; font-size:20px; font-weight:bold; margin-left:27px;">x1.5</span>
+            <span id="REDBUTTON" class="S RED" style="font-weight:bold; color:red;">&nbsp;&nbsp;RED&nbsp;&nbsp;<br><span style="color:white; font-size:20px; font-weight:bold; margin-left:27px;">x1.5</span></span>
         </label>
         <input type="radio" name="typeCard" id="typeBetBlack"class="types">
         <label for="typeBetBlack">
-            <span class="S Q BLACK" style="font-weight:bold; color:black;">BLACK<br><span style="color:white; font-size:20px; font-weight:bold; margin-left:27px;">x1.5</span>
+            <span id="BLACKBUTTON" class="S Q BLACK" style="font-weight:bold; color:black;">BLACK<br><span style="color:white; font-size:20px; font-weight:bold; margin-left:27px;">x1.5</span></span>
         </label><br>
         <input type="radio" name="typeCard" id="typeBet3to8"class="types">
         <label for="typeBet3to8">
-            <span class="S 3to8" style="font-weight:bold; color:rgb(154, 212, 45);">&nbsp;&nbsp;3~8&nbsp;&nbsp;<br><span style="color:white; font-size:20px; font-weight: bold; margin-left:27px;">x1.3</span></span>
+            <span id="3TO8BUTTON" class="S 3to8" style="font-weight:bold; color:rgb(154, 212, 45);">&nbsp;&nbsp;3~8&nbsp;&nbsp;<br><span style="color:white; font-size:20px; font-weight: bold; margin-left:27px;">x1.3</span></span>
         </label>
         <input type="radio" name="typeCard" id="typeBetJQKA"class="types">
         <label for="typeBetJQKA">
-            <span class="S Q JQKA" style="font-weight:bold; color:rgb(154,212,45);">&nbsp;JQKA&nbsp;<br><span style="color:white; font-size:20px; font-weight:bold; margin-left:27px;">x1.8</span>
+            <span id="JQKABUTTON" class="S Q JQKA" style="font-weight:bold; color:rgb(154,212,45);">&nbsp;JQKA&nbsp;<br><span style="color:white; font-size:20px; font-weight:bold; margin-left:27px;">x1.8</span></span>
         </label><br>
         <input type="radio" name="typeCard" id="typeBetJOKER"class="types">
         <label for="typeBetJOKER">
-            <span class="S JOKER" style="font-weight:bold; color:skyblue;">JOKER<br><span style="color:white; font-size:20px; font-weight:bold; margin-left:27px;">x20</span></span>
+            <span id="JOKERBUTTON" class="S JOKER" style="font-weight:bold; color:skyblue;">JOKER<br><span style="color:white; font-size:20px; font-weight:bold; margin-left:27px;">x10</span></span>
         </label>
         </div>
     </form>
@@ -47,8 +47,14 @@
 <input type="text" id="betMoney" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" required> 
 </form>
     <h1 id="haveMoney">보유금</h1>
-    <h2>0</h2>
+    <h2 id="money">0</h2>
     <h1 id="bettingMoney">베팅금</h1>
+    <h1 id="option">추가 옵션</h1>
+    <h2 id="optionValue"></h2>
+
+    </div>
     <script src="./script.js"></script>
+    <script  src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 </body>
 </html>
