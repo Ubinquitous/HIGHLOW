@@ -8,12 +8,11 @@ const calcBetHigh = document.getElementById("calcBetHigh");
 const calcBetLow = document.getElementById("calcBetLow");
 const betMoney = document.getElementById("betMoney");
 const bettingButton = document.querySelector(".bettingButton");
-const upReward = document.getElementById("reward");
-const downReward = document.getElementById("Dreward");
 const bettingMoneyForm = document.getElementById("bettingMoneyForm");
 const standardCardImage = document.getElementById("cardImg1");
 const bettingCardImage = document.getElementById("cardImg2");
-
+const upReward = document.getElementById("reward");
+const downReward = document.getElementById("Dreward");
 const redButton = document.getElementById("REDBUTTON");
 const blackButton = document.getElementById("BLACKBUTTON");
 const threeTo8Button = document.getElementById("3TO8BUTTON");
@@ -25,7 +24,13 @@ let optionCalculator;
 let card1Num, card2Num;
 let card1Type, card2Type;
 let highMoneyPer, lowMoneyPer;
-let money = 100000;
+let success = 0;
+
+if(parseInt(localStorage.getItem("money"))<1000){
+    money = 2000;
+}
+else money = parseInt(localStorage.getItem("money")) || 10000;
+
 h2.innerText = money;
 
 const cardType = ["H_", "D_", "S_", "C_"];
@@ -92,11 +97,13 @@ function createStandardCard(){
     if(card1Num==="1" || card1Num==="JOKER"){
         card1Num="7";
         standardCardImage.src=`./img/${card1Type}7.png`;
+        
     } 
 }
 
 
 function ifButtonClickIsUp(){
+
     if(betMoney.value==""){
         alert(`베팅금을 입력해주세요.`);
         return 0;
@@ -111,48 +118,6 @@ function ifButtonClickIsUp(){
         alert(`천 원 이상부터 베팅이 가능합니다.`);
         betMoney.value = "";
         return 0;
-    }
-
-    if(optionCalculator=="RED"){
-        if(card2Type=="H_" || card2Type=="D_"){
-            money = money + parseInt(betMoney.value*1.5);
-        } else {
-            money = money - parseInt(betMoney.value*1.5);
-        }
-    }
-    if(optionCalculator=="BLACK"){
-        if(card2Type=="S_" || card2Type=="C_"){
-            money = money + parseInt(betMoney.value*1.5);
-        } else {
-            money = money - parseInt(betMoney.value*1.5);
-        }
-    }
-    if(optionCalculator=="3~8"){
-        if(card2Num>=3 && card2Num<=8){
-            money = money + parseInt(betMoney.value*1.5);
-        } else {
-            money = money - parseInt(betMoney.value*1.5);
-        }
-    }
-    if(optionCalculator=="JQKA"){
-        if(card2Num=="J" || card2Num=="Q" || card2Num=="K" || card2Num=="A"){
-            money = money + parseInt(betMoney.value*1.8);
-        } else {
-            money = money - parseInt(betMoney.value*1.8);
-        }
-    }
-
-    if(optionCalculator=="JOKER"){
-        if(betMoney.value>money/10){
-            alert(`자금이 부족합니다.`);
-            betMoney.value="";
-            return 0;
-        }
-        if(card2Num=="JOKER"){
-            money = money + parseInt(betMoney.value*10);
-        } else {
-            money = money - parseInt(betMoney.value*10);
-        }
     }
 
     if(parseInt(card2Num)===11){
@@ -173,40 +138,121 @@ function ifButtonClickIsUp(){
     if(card2Num==="JOKER" && card1Num !== "JOKER"){
         money = money + parseInt(betMoney.value*highMoneyPer);
         h2.innerText = `${money}`;
+        $().ready(function () {
+            if(Swal.fire({
+                icon: 'success',
+                title: '베팅 성공',
+                text: `현재 보유 금액 : ${money}`,
+            })){} else window.location.reload;
+            success=1;
+        });
     }
     if(card2Num==="JOKER" && card1Num === "JOKER"){
         console.log(`draw`);
+        $().ready(function () {
+            if(Swal.fire({
+                icon: 'warning',
+                title: '무승부',
+                text: `현재 보유 금액 : ${money}`,
+            })){} else window.location.reload();
+        });
     }
     if(card2Num!=="JOKER" && card1Num === "JOKER"){
         money = money - parseInt(betMoney.value);
         h2.innerText = `${money}`;
+        $().ready(function () {
+            if(Swal.fire({
+                icon: 'error',
+                title: '베팅 실패',
+                text: `현재 보유 금액 : ${money}`,
+            })){} else window.location.reload();
+        });
     }
 
     if(isNaN(parseInt(card2Num)) && card2Num!=="JOKER" && isNaN(parseInt(card1Num)) && card1Num!=="JOKER"){
         if((card1Num==="J" && card2Num==="Q") || (card1Num==="Q" && card2Num==="K") || (card1Num==="K" && card2Num==="A") || (card1Num==="Q" && card2Num==="A")){
             money = money + parseInt(betMoney.value*highMoneyPer);
             h2.innerText = `${money}`;
+            $().ready(function () {
+                Swal.fire({
+                    icon: 'success',
+                    title: '베팅 성공',
+                    text: `현재 보유 금액 : ${money}`,
+                });
+                success=1;
+            });
         } else if(card1Num===card2Num){
             console.log(`draw`);
+            $().ready(function () {
+                Swal.fire({
+                    icon: 'warning',
+                    title: '무승부',
+                    text: `현재 보유 금액 : ${money}`,
+                });
+            });
         } else {
             money = money - betMoney.value;
             h2.innerText = `${money}`;
+            $().ready(function () {
+                Swal.fire({
+                    icon: 'error',
+                    title: '베팅 실패',
+                    text: `현재 보유 금액 : ${money}`,
+                });
+            });
         }
     } else if(isNaN(parseInt(card2Num)) && card2Num!=="JOKER"){
         money = money + parseInt(betMoney.value*highMoneyPer);
         h2.innerText = `${money}`;
+        $().ready(function () {
+            Swal.fire({
+                icon: 'success',
+                title: '베팅 성공',
+                text: `현재 보유 금액 : ${money}`,
+            });
+            success=1;
+        });
     } else if(isNaN(parseInt(card1Num)) && card2Num!=="JOKER"){
         money = money - betMoney.value;
         h2.innerText = `${money}`;
+        $().ready(function () {
+            Swal.fire({
+                icon: 'error',
+                title: '베팅 실패',
+                text: `현재 보유 금액 : ${money}`,
+            });
+        });
     } else {
         if(parseInt(card1Num)<parseInt(card2Num)){
             money = money + parseInt(betMoney.value*highMoneyPer);
             h2.innerText = `${money}`;
+            $().ready(function () {
+                Swal.fire({
+                    icon: 'success',
+                    title: '베팅 성공',
+                    text: `현재 보유 금액 : ${money}`,
+                });
+                success=1;
+            });
         } else if(card1Num===card2Num){
             console.log(`draw`);
+            $().ready(function () {
+                Swal.fire({
+                    icon: 'warning',
+                    title: '무승부',
+                    text: `현재 보유 금액 : ${money}`,
+                });
+            });
         } else {
             money = money - betMoney.value;
             h2.innerText = `${money}`;
+            $().ready(function () {
+                Swal.fire({
+                    icon: 'error',
+                    title: '베팅 실패',
+                    text: `현재 보유 금액 : ${money}`,
+                });
+            });
         }
     }
     if(card2Num===11){
@@ -232,6 +278,49 @@ function ifButtonClickIsUp(){
         card2Num = ["JOKER"];
     }
     betMoney.value = "";
+    
+    if(success===1){
+        if(optionCalculator=="RED"){
+            if(card2Type=="H_" || card2Type=="D_"){
+                money = money + parseInt(betMoney.value*1.5);
+            } else {
+                money = money - parseInt(betMoney.value*1.5);
+            }
+        }
+        if(optionCalculator=="BLACK"){
+            if(card2Type=="S_" || card2Type=="C_"){
+                money = money + parseInt(betMoney.value*1.5);
+            } else {
+                money = money - parseInt(betMoney.value*1.5);
+            }
+        }
+        if(optionCalculator=="3~8"){
+            if(card2Num>=3 && card2Num<=8){
+                money = money + parseInt(betMoney.value*1.5);
+            } else {
+                money = money - parseInt(betMoney.value*1.5);
+            }
+        }
+        if(optionCalculator=="JQKA"){
+            if(card2Num=="J" || card2Num=="Q" || card2Num=="K" || card2Num=="A"){
+                money = money + parseInt(betMoney.value*1.8);
+            } else {
+                money = money - parseInt(betMoney.value*1.8);
+            }
+        }
+    
+        if(optionCalculator=="JOKER"){
+            if(card2Num=="JOKER"){
+                money = money + parseInt(betMoney.value*10);
+                h2.innerText = `${money}`;
+            } else {
+                money = money - parseInt(betMoney.value*10);
+                h2.innerText = `${money}`;
+            }
+        }
+    }
+    localStorage.setItem("money", money);
+    
 }
 
 
@@ -267,39 +356,120 @@ function ifButtonClickIsDown(){
     if(card2Num==="JOKER" && card1Num !== "JOKER"){
         money = money + parseInt(betMoney.value*highMoneyPer);
         h2.innerText = `${money}`;
+        $().ready(function () {
+            Swal.fire({
+                icon: 'success',
+                title: '베팅 성공',
+                text: `현재 보유 금액 : ${money}`,
+            });
+            success=1;
+        });
     }
     if(card2Num==="JOKER" && card1Num === "JOKER"){
         console.log(`draw`);
+        $().ready(function () {
+            Swal.fire({
+                icon: 'warning',
+                title: '무승부',
+                text: `현재 보유 금액 : ${money}`,
+            });
+        });
     }
     if(card2Num!=="JOKER" && card1Num === "JOKER"){
         money = money - parseInt(betMoney.value);
         h2.innerText = `${money}`;
+        $().ready(function () {
+            Swal.fire({
+                icon: 'error',
+                title: '베팅 실패',
+                text: `현재 보유 금액 : ${money}`,
+            });
+        });
     }
     if(isNaN(parseInt(card2Num)) && card2Num!=="JOKER" && isNaN(parseInt(card1Num)) && card1Num!=="JOKER"){
         if((card1Num==="J" && card2Num==="Q") || (card1Num==="Q" && card2Num==="K") || (card1Num==="K" && card2Num==="A") || (card1Num==="Q" && card2Num==="A")){
             money = money - betMoney.value;
             h2.innerText = `${money}`;
+            $().ready(function () {
+                Swal.fire({
+                    icon: 'error',
+                    title: '베팅 실패',
+                    text: `현재 보유 금액 : ${money}`,
+                });
+            });
         } else if(card1Num===card2Num){
             console.log(`draw`);
+            $().ready(function () {
+                Swal.fire({
+                    icon: 'warning',
+                    title: '무승부',
+                    text: `현재 보유 금액 : ${money}`,
+                });
+            });
         } else {
             money = money + parseInt(betMoney.value*highMoneyPer);
             h2.innerText = `${money}`;
+            $().ready(function () {
+                Swal.fire({
+                    icon: 'success',
+                    title: '베팅 성공',
+                    text: `현재 보유 금액 : ${money}`,
+                });
+                success=1;
+            });
         }
     } else if(isNaN(parseInt(card2Num)) && card2Num!=="JOKER"){
         money = money - betMoney.value;
         h2.innerText = `${money}`;
+        $().ready(function () {
+            Swal.fire({
+                icon: 'error',
+                title: '베팅 실패',
+                text: `현재 보유 금액 : ${money}`,
+            });
+        });
     } else if(isNaN(parseInt(card1Num)) && card2Num!=="JOKER"){
         money = money + parseInt(betMoney.value*highMoneyPer);
         h2.innerText = `${money}`;
+        $().ready(function () {
+            Swal.fire({
+                icon: 'success',
+                title: '베팅 성공',
+                text: `현재 보유 금액 : ${money}`,
+            });
+            success=1;
+        });
     } else {
         if(parseInt(card1Num)<parseInt(card2Num)){
             money = money - betMoney.value;
             h2.innerText = `${money}`;
+            $().ready(function () {
+                Swal.fire({
+                    icon: 'error',
+                    title: '베팅 실패',
+                    text: `현재 보유 금액 : ${money}`,
+                });
+            });
         } else if(card1Num===card2Num){
             console.log(`draw`);
+            $().ready(function () {
+                Swal.fire({
+                    icon: 'warning',
+                    title: '무승부',
+                    text: `현재 보유 금액 : ${money}`,
+                });
+            });
         } else {
             money = money + parseInt(betMoney.value*highMoneyPer);
             h2.innerText = `${money}`;
+            $().ready(function () {
+                Swal.fire({
+                    icon: 'success',
+                    title: '베팅 성공',
+                    text: `현재 보유 금액 : ${money}`,
+                });
+                success=1;
+            });
         }
     }
 
@@ -327,6 +497,49 @@ function ifButtonClickIsDown(){
         card2Num = ["JOKER"];
     }
     betMoney.value = "";
+
+    if(success===1){
+        if(optionCalculator=="RED"){
+            if(card2Type=="H_" || card2Type=="D_"){
+                money = money + parseInt(betMoney.value*1.5);
+            } else {
+                money = money - parseInt(betMoney.value*1.5);
+            }
+        }
+        if(optionCalculator=="BLACK"){
+            if(card2Type=="S_" || card2Type=="C_"){
+                money = money + parseInt(betMoney.value*1.5);
+            } else {
+                money = money - parseInt(betMoney.value*1.5);
+            }
+        }
+        if(optionCalculator=="3~8"){
+            if(card2Num>=3 && card2Num<=8){
+                money = money + parseInt(betMoney.value*1.5);
+            } else {
+                money = money - parseInt(betMoney.value*1.5);
+            }
+        }
+        if(optionCalculator=="JQKA"){
+            if(card2Num=="J" || card2Num=="Q" || card2Num=="K" || card2Num=="A"){
+                money = money + parseInt(betMoney.value*1.8);
+            } else {
+                money = money - parseInt(betMoney.value*1.8);
+            }
+        }
+    
+        if(optionCalculator=="JOKER"){
+            if(card2Num=="JOKER"){
+                money = money + parseInt(betMoney.value*10);
+                h2.innerText = `${money}`;
+            } else {
+                money = money - parseInt(betMoney.value*10);
+                h2.innerText = `${money}`;
+            }
+        }
+    }
+
+    localStorage.setItem("money", money);
 }
 
 function calculatorMoney(){
