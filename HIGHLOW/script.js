@@ -19,6 +19,7 @@ const threeTo8Button = document.getElementById("3TO8BUTTON");
 const jokerButton = document.getElementById("JOKERBUTTON");
 const jqkaButton = document.getElementById("JQKABUTTON");
 const optionValue = document.getElementById("optionValue");
+const refresh = document.querySelector("h3");
 
 let optionCalculator;
 let card1Num, card2Num;
@@ -27,7 +28,7 @@ let highMoneyPer, lowMoneyPer;
 let success = 0;
 
 if(parseInt(localStorage.getItem("money"))<1000){
-    money = 2000;
+    money = 10000;
 }
 else money = parseInt(localStorage.getItem("money")) || 10000;
 
@@ -320,7 +321,10 @@ function ifButtonClickIsUp(){
         }
     }
     localStorage.setItem("money", money);
-    
+    betMoney.setAttribute("disabled", "disabled");
+    upBtn.setAttribute("disabled", "disabled");
+    downBtn.setAttribute("disabled", "disabled");
+    refresh.innerText = `다시 시작하려면 새로고침 해주세요.`;
 }
 
 
@@ -540,6 +544,11 @@ function ifButtonClickIsDown(){
     }
 
     localStorage.setItem("money", money);
+
+    betMoney.setAttribute("disabled", "disabled");
+    upBtn.setAttribute("disabled", "disabled");
+    downBtn.setAttribute("disabled", "disabled");
+    refresh.innerText = `다시 시작하려면 새로고침 해주세요.`;
 }
 
 function calculatorMoney(){

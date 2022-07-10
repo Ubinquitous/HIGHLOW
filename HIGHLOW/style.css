@@ -33,6 +33,7 @@ input[type="radio"]{
     padding:27px 166px;
 }
 
+
 #buttonDiv {
 	float:left;
 	margin-right:20px;
@@ -42,7 +43,7 @@ input[type="radio"]{
     height:730px;
     margin-top:10px;
     background-color: black;
-    border-radius: 5px;
+    border-radius: 15px;
 }
 
 .cardImg {
@@ -81,8 +82,6 @@ input[type="radio"]{
     text-align: center;
     border-radius: 5px;
     margin-top:5px;
-    margin-left:10px;
-    margin-right:10px;
     padding-bottom:10px;
 }
 #upBetting {
@@ -105,7 +104,10 @@ input[type="radio"]{
     font-size:22px;
     color:rgb(254, 217, 82);
 }
-
+h3 {
+    float:left;
+    margin-left:20px;
+}
 #bettingMoney {
     float:left;
     text-align:right;
