@@ -1,2 +1,2 @@
 # HIGHLOW
-HIGHLOW made with JS
+HIGHLOW made with JavaScript
